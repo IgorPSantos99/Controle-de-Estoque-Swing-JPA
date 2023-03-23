@@ -208,9 +208,4 @@ public class TelaEntradaSaidaProduto extends JFrame {
 			}
 		});
 	}
-
-	public static void main(String[] args) {
-		TelaEntradaSaidaProduto tela = new TelaEntradaSaidaProduto();
-		tela.setVisible(true);
-	}
 }

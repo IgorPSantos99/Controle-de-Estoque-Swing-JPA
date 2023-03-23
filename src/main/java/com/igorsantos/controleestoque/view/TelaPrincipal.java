@@ -3,7 +3,7 @@ package com.igorsantos.controleestoque.view;
 import com.igorsantos.controleestoque.model.Produto;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import java.awt.*;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,10 +62,27 @@ public class TelaPrincipal extends JFrame {
             telaEntradaSaidaProduto.setVisible(true);
             atualizarTabela();
         });
+        
         entradaSaidaMenu.add(entradaSaidaItem);
+        
+        JMenu pesquisaProdutoMenu = new JMenu("Pesquisa");
+
+        JMenuItem pesquisaProdutoItem = new JMenuItem("Pesquisa de Produto");
+        pesquisaProdutoItem.addActionListener(event -> {
+            TelaPesquisaProduto telaPesquisaProduto = null;
+			try {
+				telaPesquisaProduto = new TelaPesquisaProduto();
+			} catch (SQLException e) {
+				JOptionPane.showMessageDialog(null, "Não foi possível conectar ao banco de dados.", "Erro de Conexão", JOptionPane.ERROR_MESSAGE);
+			}
+            telaPesquisaProduto.setVisible(true);
+            atualizarTabela();
+        });
+        pesquisaProdutoMenu.add(pesquisaProdutoItem);
 
         menuBar.add(cadastroMenu);
         menuBar.add(entradaSaidaMenu);
+        menuBar.add(pesquisaProdutoMenu);
 
         setJMenuBar(menuBar);
 
@@ -80,10 +97,5 @@ public class TelaPrincipal extends JFrame {
             Object[] rowData = {produto.getCodigo(), produto.getNome(), produto.getQuantidade()};
             modeloTabela.addRow(rowData);
         }
-    }
-    public static void main(String[] args) {
-        TelaPrincipal telaPrincipal = new TelaPrincipal();
-        telaPrincipal.setVisible(true);
-    }
-    
+    }    
 }

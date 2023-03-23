@@ -1,13 +1,12 @@
 package com.igorsantos.controleestoque;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
+import com.igorsantos.controleestoque.view.TelaLogin;
 
-@SpringBootApplication
+
 public class ControleEstoqueApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ControleEstoqueApplication.class, args);
+		new TelaLogin();
 	}
 
 }

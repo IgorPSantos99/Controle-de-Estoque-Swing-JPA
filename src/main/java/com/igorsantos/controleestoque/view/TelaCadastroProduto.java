@@ -6,8 +6,8 @@ import javax.swing.*;
 public class TelaCadastroProduto extends JFrame {
 	private static final long serialVersionUID = 1L;
 	
-	private JLabel codigoLabel, descricaoLabel, quantidadeLabel, precoLabel;
-    private JTextField codigoField, descricaoField, quantidadeField, precoField;
+	private JLabel codigoLabel, descricaoLabel, quantidadeLabel;
+    private JTextField codigoField, descricaoField, quantidadeField;
     private JButton salvarButton, cancelarButton;
 
     public TelaCadastroProduto() {
@@ -15,18 +15,16 @@ public class TelaCadastroProduto extends JFrame {
 
         // Configura a janela de cadastro
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setSize(400, 200);
+        setSize(400, 300);
         setLocationRelativeTo(null);
 
         // Cria os componentes da tela de cadastro
         codigoLabel = new JLabel("Código:");
         descricaoLabel = new JLabel("Descrição:");
         quantidadeLabel = new JLabel("Quantidade:");
-        precoLabel = new JLabel("Preço:");
-        codigoField = new JTextField(10);
-        descricaoField = new JTextField(30);
-        quantidadeField = new JTextField(10);
-        precoField = new JTextField(10);
+        codigoField = new JTextField(8);
+        descricaoField = new JTextField(20);
+        quantidadeField = new JTextField(8);
         salvarButton = new JButton("Salvar");
         cancelarButton = new JButton("Cancelar");
 
@@ -63,15 +61,6 @@ public class TelaCadastroProduto extends JFrame {
         container.add(quantidadeField, c);
 
         c.gridx = 0;
-        c.gridy = 3;
-        c.anchor = GridBagConstraints.LINE_END;
-        container.add(precoLabel, c);
-
-        c.gridx = 1;
-        c.anchor = GridBagConstraints.LINE_START;
-        container.add(precoField, c);
-
-        c.gridx = 0;
         c.gridy = 4;
         c.gridwidth = 2;
         c.insets = new Insets(10, 0, 0, 0);
@@ -83,10 +72,6 @@ public class TelaCadastroProduto extends JFrame {
 
         // Exibe a janela de cadastro
         setVisible(true);
-    }
-
-    public static void main(String[] args) {
-        new TelaCadastroProduto();
     }
 
 }

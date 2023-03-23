@@ -2,16 +2,13 @@ package com.igorsantos.controleestoque.view;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.swing.*;
 import java.util.List;
 import com.igorsantos.controleestoque.model.Produto;
 import com.igorsantos.controleestoque.util.ProdutoTableModel;
+import com.igorsantos.controleestoque.dao.*;
 
 public class TelaPesquisaProduto extends JFrame {
 	private static final long serialVersionUID = 1L;
@@ -24,12 +21,12 @@ public class TelaPesquisaProduto extends JFrame {
 	private List<Produto> produtos = new ArrayList<>();
 	private ProdutoTableModel produtoTableModel;
 
-	public TelaPesquisaProduto() {
+	public TelaPesquisaProduto() throws SQLException {
 		super("Pesquisa de Produto");
 
 		// Configura a janela de pesquisa de produtos
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setSize(600, 400);
+		setSize(600, 600);
 		setLocationRelativeTo(null);
 
 		// Cria os componentes da tela de pesquisa
@@ -103,77 +100,26 @@ public class TelaPesquisaProduto extends JFrame {
 	// Método para realizar a pesquisa
 	private void realizarPesquisa(String pesquisa, String tipoPesquisa) {
 		List<Produto> resultados = new ArrayList<>();
-
-		if (tipoPesquisa.equals("Código")) {
-			resultados = buscarProdutosPorCodigo(pesquisa);
-		} else if (tipoPesquisa.equals("Nome")) {
-			resultados = buscarProdutosPorNome(pesquisa);
+		
+		try {
+			if (tipoPesquisa.equals("Código")) {
+			resultados = ProdutoDAO.findByCodigo(pesquisa);
+		} 
+			else if (tipoPesquisa.equals("Nome")) {
+			resultados = ProdutoDAO.findByNome(pesquisa);
 		}
 
 		// Atualiza a tabela de produtos com os resultados da pesquisa
 		produtoTableModel.setProdutos(resultados);
-	}
-
-	// Método para buscar produtos pelo código
-	private List<Produto> buscarProdutosPorCodigo(String codigo) {
-	    try {
-	        Connection con = DriverManager.getConnection(url, user, password);
-	        String sql = "SELECT * FROM produtos WHERE codigo = ?";
-	        PreparedStatement stmt = con.prepareStatement(sql);
-	        stmt.setString(1, codigo);
-	        ResultSet rs = stmt.executeQuery();
-	        List<Produto> produtos = new ArrayList<>();
-	        while (rs.next()) {
-	            Produto produto = new Produto();
-	            produto.setCodigo(rs.getString("codigo"));
-	            produto.setNome(rs.getString("nome"));
-	            produto.setQuantidade(rs.getInt("quantidade"));
-	            produtos.add(produto);
-	        }
-	        rs.close();
-	        stmt.close();
-	        con.close();
-	        return produtos;
-	    } catch (SQLException e) {
-	    	JOptionPane.showMessageDialog(null, "Não foi possível conectar ao banco de dados.", "Erro de Conexão", JOptionPane.ERROR_MESSAGE);
-	    }
-	}
-
-
-	// Método para buscar produtos pelo nome
-	private List<Produto> buscarProdutosPorNome(String nome) {
-		try {
-	        Connection con = DriverManager.getConnection(url, user, password);
-	        String sql = "SELECT * FROM produtos WHERE codigo = ?";
-	        PreparedStatement stmt = con.prepareStatement(sql);
-	        stmt.setString(1, nome);
-	        ResultSet rs = stmt.executeQuery();
-	        List<Produto> produtos = new ArrayList<>();
-	        while (rs.next()) {
-	            Produto produto = new Produto();
-	            produto.setCodigo(rs.getString("codigo"));
-	            produto.setNome(rs.getString("nome"));
-	            produto.setQuantidade(rs.getInt("quantidade"));
-	            produtos.add(produto);
-	        }
-	        rs.close();
-	        stmt.close();
-	        con.close();
-	        return produtos;
-	    } catch (SQLException e) {
-	    	JOptionPane.showMessageDialog(null, "Não foi possível conectar ao banco de dados.", "Erro de Conexão", JOptionPane.ERROR_MESSAGE);
-	    }
-	}
+	} catch (SQLException e) {
+    	JOptionPane.showMessageDialog(null, "Não foi possível conectar ao banco de dados.", "Erro de Conexão", JOptionPane.ERROR_MESSAGE);
+    }
+			
+		}
 	
-	private void carregarProdutos() {
-	    // Lógica para carregar produtos de uma fonte externa, como um banco de dados ou um arquivo.
-	    // Por exemplo, aqui vamos adicionar alguns produtos manualmente para fins de demonstração.
+	private void carregarProdutos() throws SQLException {
 	    produtos.add(new Produto("0001", "Ryzen 7 7600X", 2));
 	    produtos.add(new Produto("0002", "Ryzen 5 5600G", 2)); 
 	    produtos.add(new Produto("0003", "Ryzen 9 7950X", 10));
-	}
-
-	public static void main(String[] args) {
-		new TelaPesquisaProduto();
-	}
+	}	
 }
